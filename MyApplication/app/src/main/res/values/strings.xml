@@ -3,4 +3,10 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!--Text bouton page accueil-->
+    <string name="btn_Upload">Test Upload</string>
+    <string name="btn_Download">Test Download</string>
+    <string name="btn_MoveFile">Test Move File</string>
+    <string name="title_activity_movefile">Movefile</string>
 </resources>
