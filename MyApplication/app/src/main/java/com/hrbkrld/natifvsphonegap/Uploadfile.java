@@ -56,6 +56,45 @@ public class Uploadfile extends AppCompatActivity {
         }
     }
 
+
+    public int checkNetwork(){
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            Log.d("NETWORK", "Device connected to network");
+            return 0;
+        } else {
+            Log.d("NETWORK", "Device NOT CONNECTED to network");
+            return -1;
+        }
+    }
+
+
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+    }
+
+
+    /**
+     * 2 libraries are required : Jsch and Jzlib
+     * refer to : http://eridem.net/android-tip-021-ssh-execute-remote-commands-with-android/
+     * how to add .jar ?
+     *  Copy/paste .jar into android_project/app/libs
+     *  nb : create 'libs' folder if necessary
+     *  into the project view, find the added jar, right click on it, and 'add as library'
+     * how to add java module ?
+     *  Copy/paste module into android_project/app/libs
+     *
+     */
     private class joinFTP extends AsyncTask<String, Void, String> {
 
         @Override
@@ -126,56 +165,6 @@ public class Uploadfile extends AppCompatActivity {
         }
     }
 
-    /*public void joinFTP()
-        try {
-            Log.d("RESPONSE", "avant socket");
-            socket = new Socket(url, 23);
-            Log.d("RESPONSE", "apres socket");
-            OutputStream out = socket.getOutputStream();
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            //Log in
-            out.write(user.getBytes());
-            out.write(mdp.getBytes());
-
-            //Interact with remote ftp server
-            out.write("ls".getBytes());
-            Log.d("RESPONSE", in.readLine());
-
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    public int checkNetwork(){
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            Log.d("NETWORK", "Device connected to network");
-            return 0;
-        } else {
-            Log.d("NETWORK", "Device NOT CONNECTED to network");
-            return -1;
-        }
-    }
-
-
-    @Override
-    protected void onPause() {
-        // TODO Auto-generated method stub
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        // TODO Auto-generated method stub
-        super.onDestroy();
-    }
 
 }
