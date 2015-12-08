@@ -12,4 +12,5 @@
 
     <!--Text page movefile-->
     <string name="galleryButton">Ouvrir une image</string>
+    <string name="title_activity_download_file">DownloadFile</string>
 </resources>

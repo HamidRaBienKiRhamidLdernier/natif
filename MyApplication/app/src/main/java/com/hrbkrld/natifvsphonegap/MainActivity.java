@@ -18,12 +18,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btn_MoveFile = (Button) findViewById(R.id.button_MoveFile);
+        btn_Download = (Button) findViewById(R.id.button_Download);
 
         btn_MoveFile.setOnClickListener(
         new View.OnClickListener() {
             public void onClick(View v)
             {
                 Intent intent = new Intent(MainActivity.this, Movefile.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_Download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DownloadFile.class);
                 startActivity(intent);
             }
         });
