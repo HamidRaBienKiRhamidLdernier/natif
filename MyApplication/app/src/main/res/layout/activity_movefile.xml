@@ -14,15 +14,7 @@
         android:id="@+id/boutonGallery"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="pickPhoto"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageViewFrom"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="182dp" />
+        android:onClick="getSelectedPicture"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -35,7 +27,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/imageViewFrom" />
+        android:layout_alignParentTop="true"/>
 </RelativeLayout>
