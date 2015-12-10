@@ -9,9 +9,10 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btn_Upload;
+
     private Button btn_Download;
     private Button btn_MoveFile;
+    private Button btn_Upload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btn_MoveFile = (Button) findViewById(R.id.button_MoveFile);
         btn_Download = (Button) findViewById(R.id.button_Download);
+        btn_Upload = (Button) findViewById(R.id.button_Upload);
 
         btn_MoveFile.setOnClickListener(
         new View.OnClickListener() {
@@ -33,6 +35,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DownloadFile.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_Upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UploadFile.class);
                 startActivity(intent);
             }
         });

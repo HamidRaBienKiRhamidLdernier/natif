@@ -41,7 +41,11 @@
         <activity
             android:name=".DownloadFile"
             android:label="@string/title_activity_download_file"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".UploadFile"
+            android:label="activity_upload_file"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
