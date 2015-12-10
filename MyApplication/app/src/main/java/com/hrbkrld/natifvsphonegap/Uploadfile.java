@@ -2,27 +2,15 @@ package com.hrbkrld.natifvsphonegap;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -33,12 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +54,7 @@ public class UploadFile extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setCancelable(true);
 
+        timeStart = new Date().getTime();
         final UploadTask uploadTask = new UploadTask(UploadFile.this);
         uploadTask.execute("blabla");
 
@@ -83,11 +69,25 @@ public class UploadFile extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            this.logRemote("abrun", "O0r8q1U8");
+            int status = this.logRemote("abrun");
+            if (status == -1){
+                return "Failed to create file";
+            }
+            if (status == -2){
+                return "Failed to establish remote connection";
+            }
+            if (status == -3){
+                return "IO eXception somewhere";
+            }
+            if (status == -4){
+                return "File already exists on remote host";
+            }
+
+
             return null;
         }
 
-        protected int logRemote(String username, String password)
+        protected int logRemote(String username)
         {
 
             String pathTransfert = "http://etunix.uqac.ca/"+username+"/transfert.php";
@@ -104,6 +104,7 @@ public class UploadFile extends AppCompatActivity {
                 url = new URL(pathTransfert);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
+                return -2;
             }
 
             try {
@@ -167,8 +168,10 @@ public class UploadFile extends AppCompatActivity {
                 int serverResponseCode = urlConnection.getResponseCode();
                 String serverResponseMessage = urlConnection.getResponseMessage();
 
+                int code200 = 0;
                 if(serverResponseCode == 200){
                     Log.d("RESPONSE", "file uploaded"+serverResponseCode+" - "+serverResponseMessage);
+                    code200 = 1;
                 }else{
                     Log.d("RESPONSE", "error : "+serverResponseCode+" - "+serverResponseMessage);
                 }
@@ -178,17 +181,19 @@ public class UploadFile extends AppCompatActivity {
 
                 urlConnection.connect();
 
-                // Contenu renvoyé
+                // Contenu renvoyé par le serveur (echo ou html brut)
                 InputStreamReader isr = new InputStreamReader(urlConnection.getInputStream());
-                getResponse(isr);
+                String response = getResponse(isr);
                 isr.close();
 
-
+                //Verifier le contenu renvoyé
+                if (code200 == 1 && response.contains("Sorry"))
+                    return -4;
 
 
             } catch (IOException e) {
                 e.printStackTrace();
-                return -1;
+                return -3;
             }
             return 0;
         }
@@ -242,7 +247,7 @@ public class UploadFile extends AppCompatActivity {
 
 
         //Read response
-        public void getResponse(InputStreamReader isr){
+        public String getResponse(InputStreamReader isr){
             String line = "";
             BufferedReader reader = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
@@ -257,6 +262,7 @@ public class UploadFile extends AppCompatActivity {
             // Response from server after login process will be stored in response variable.
             String response = sb.toString();
             Log.d("REMOTE", response);
+            return response;
         }
 
         @Override
@@ -283,6 +289,18 @@ public class UploadFile extends AppCompatActivity {
         protected void onPostExecute(String s) {
             wakeLock.release();
             progressDialog.dismiss();
+
+            if (s != null) {
+                Toast.makeText(context, "Upload error: " + s, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Upload success !", Toast.LENGTH_SHORT).show();
+
+                timeStop = new Date().getTime();
+                duration = timeStop - timeStart;
+
+                TextView tv = (TextView) findViewById(R.id.dl_txt);
+                tv.setText("Download time : " + duration + "ms");
+            }
             Log.d("POST", "pute");
         }
 
