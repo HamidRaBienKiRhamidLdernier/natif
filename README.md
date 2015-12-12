@@ -14,3 +14,12 @@ Résultat 10 tests (à refaire une fois que la version phonegap sera terminé, p
 Temps moyen download + affichage = 2660 ms
 Temps le plus bas : 1556 ms
 Temps le plus élevé : 5492 ms
+
+
+11/12/2015
+Upload d'un fichier sur le serveur apache
+Temps : 7h
+Résultat 15 tests
+Temps moyen (Creation fichier / Upload / Affichage) : 2256 ms
+Temps minimum : 1798 ms
+Temps maximum : 2717 ms
